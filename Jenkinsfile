@@ -25,6 +25,7 @@ podTemplate(yaml: '''
         )
       container('alpine') {
         stage('get latest tag') {
+          sh(returnStdout: true, script: "apk update && apk add git")
           sh(returnStdout: true, script: "git tag --contains").trim()
         }
       }
