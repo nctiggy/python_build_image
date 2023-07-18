@@ -9,8 +9,8 @@ podTemplate(yaml: '''
         - sleep
         args:
         - 99d
-      - name: busybox
-        image: busybox
+      - name: alpine
+        image: alpine
         command:
         - sleep
         args:
@@ -23,7 +23,7 @@ podTemplate(yaml: '''
         branches: [[name: 'main']],
         userRemoteConfigs: [[url: 'https://github.com/nctiggy/python_build_image.git']]
         )
-      container('busybox') {
+      container('alpine') {
         stage('get latest tag') {
           sh(returnStdout: true, script: "git tag --contains").trim()
         }
