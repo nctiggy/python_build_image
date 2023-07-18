@@ -42,3 +42,6 @@ podTemplate(yaml: '''
             /kaniko/executor --destination=nctiggy/pythonBuildImage:$TAG_NAME
           '''
         }
+      }
+    }
+}
