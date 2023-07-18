@@ -4,7 +4,7 @@ podTemplate(yaml: '''
     spec:
       containers:
       - name: kaniko
-        image: gcr.io/kaniko-project/executor:latest
+        image: gcr.io/kaniko-project/executor:debug
         command:
         - sleep
         args:
@@ -25,7 +25,7 @@ podTemplate(yaml: '''
         )
       container('busybox') {
         stage('get latest tag') {
-          sh("echo $TAG_NAME")
+          sh(returnStdout: true, script: "git tag --contains").trim()
         }
       }
       container('kaniko') {
