@@ -28,6 +28,7 @@ podTemplate(yaml: '''
           sh '''
             apk update
             apk add git
+            git config --global --add safe.directory /home/jenkins/agent/workspace/python_build_image
           '''
           sh(returnStdout: true, script: "git tag --contains").trim()
         }
@@ -37,13 +38,14 @@ podTemplate(yaml: '''
           stage('Create dockerconfig') {
             sh '''
               sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
+              echo $dockerhub_id
             '''
           }
         }
         stage('Build and Push Docker Container') {
           sh '''
             ls -ltra
-            /kaniko/executor --destination=nctiggy/pythonBuildImage:$TAG_NAME
+            /kaniko/executor --destination=nctiggy/pythonBuildImage
           '''
         }
       }
