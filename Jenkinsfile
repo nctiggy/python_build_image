@@ -47,14 +47,14 @@ podTemplate(yaml: '''
                 }
               EOT
               sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
-              echo $dockerhub_id
             '''
           }
         }
         stage('Build and Push Docker Container') {
           sh '''
+            cat /kaniko/.docker/config.json
             ls -ltra
-            /kaniko/executor --destination=nctiggy/pythonBuildImage
+            /kaniko/executor --destination=nctiggy/python-build-image
           '''
         }
       }
