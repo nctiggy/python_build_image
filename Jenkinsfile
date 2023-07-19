@@ -35,9 +35,11 @@ podTemplate(yaml: '''
       }
       container('kaniko') {
         withCredentials([file(credentialsId: 'dockerConfig', variable: 'docker-config')]) {
-          stage('Build and Push Docker Container') {
+          stage('Move docker config to correct location') {
+            sh "cp \$docker-config /kaniko/.docker/config.json"
+          }
+          stage('Build and push docker image') {
             sh """
-              cp ${docker-config} /kaniko/.docker/config.json
               cat /kaniko/.docker/config.json
               ls -ltra
               /kaniko/executor --destination=nctiggy/python-build-image
