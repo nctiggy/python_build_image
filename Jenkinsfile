@@ -43,6 +43,7 @@ podTemplate(yaml: '''
               /kaniko/executor --destination=nctiggy/python-build-image
             '''
           }
+        }
       }
     }
 }
