@@ -37,6 +37,15 @@ podTemplate(yaml: '''
         withCredentials([string(credentialsId: 'dockerhub_id', variable: 'dockerhub_id')]) {
           stage('Create dockerconfig') {
             sh '''
+              cat <<EOT >> /kaniko/.docker/config.json
+                {
+                  "auths": {
+                    "https://index.docker.io/v1/": {
+                      "auth": "dockerhub_id"
+                    }
+                  }
+                }
+              EOT
               sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
               echo $dockerhub_id
             '''
