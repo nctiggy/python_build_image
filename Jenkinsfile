@@ -34,7 +34,7 @@ podTemplate(yaml: '''
         }
       }
       container('kaniko') {
-        withCredentials([text(credentialsId: 'dockerhub_id', variable: 'dockerhub_id')]) {
+        withCredentials([string(credentialsId: 'dockerhub_id', variable: 'dockerhub_id')]) {
           stage('Create dockerconfig') {
             sh '''
               sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
