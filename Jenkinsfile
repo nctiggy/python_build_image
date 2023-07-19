@@ -46,7 +46,7 @@ podTemplate(yaml: '''
   }
 }
 EOT
-              sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
+              sed -i 's/dockerhub-id/${dockerhub_id}/g' /kaniko/.docker/config.json
             """
           }
         }
