@@ -34,29 +34,15 @@ podTemplate(yaml: '''
         }
       }
       container('kaniko') {
-        withCredentials([string(credentialsId: 'dockerhub_id', variable: 'dockerhub_id')]) {
-          stage('Create dockerconfig') {
-            sh """
-              cat <<EOT >> /kaniko/.docker/config.json
-{
-  "auths": {
-    "https://index.docker.io/v1/": {
-      "auth": "dockerhub_id"
-    }
-  }
-}
-EOT
-              sed -i "s/dockerhub-id/${dockerhub_id}/g" /kaniko/.docker/config.json
-            """
+        withCredentials([file(credentialsId: 'dockerConfig', variable: 'docker-config')]) {
+          stage('Build and Push Docker Container') {
+            sh '''
+              cp \$docker-config /kaniko/.docker/config.json
+              cat /kaniko/.docker/config.json
+              ls -ltra
+              /kaniko/executor --destination=nctiggy/python-build-image
+            '''
           }
-        }
-        stage('Build and Push Docker Container') {
-          sh '''
-            cat /kaniko/.docker/config.json
-            ls -ltra
-            /kaniko/executor --destination=nctiggy/python-build-image
-          '''
-        }
       }
     }
 }
