@@ -36,7 +36,7 @@ podTemplate(yaml: '''
       container('kaniko') {
         withCredentials([string(credentialsId: 'dockerhub_id', variable: 'dockerhub_id')]) {
           stage('Create dockerconfig') {
-            sh '''
+            sh """
               cat <<EOT >> /kaniko/.docker/config.json
 {
   "auths": {
@@ -47,7 +47,7 @@ podTemplate(yaml: '''
 }
 EOT
               sed -i 's/dockerhub-id/$dockerhub_id/g' /kaniko/.docker/config.json
-            '''
+            """
           }
         }
         stage('Build and Push Docker Container') {
