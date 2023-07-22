@@ -4,6 +4,7 @@ RUN apt update && apt install -y --no-install-recommends \
             git && \
             pip install tox && \
             pip install pre-commit && \
+            pip install coveralls && \
             pip install pytest && \
             git config --global --add safe.directory '*'
 
