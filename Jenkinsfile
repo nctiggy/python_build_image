@@ -39,11 +39,7 @@ podTemplate(yaml: '''
             sh "cp \$dockerconfig /kaniko/.docker/config.json"
           }
           stage('Build and push docker image') {
-            sh """
-              cat /kaniko/.docker/config.json
-              ls -ltra
-              /kaniko/executor --destination=nctiggy/python-build-image
-            """
+            sh "/kaniko/executor --destination=nctiggy/python-build-image"
           }
         }
       }
