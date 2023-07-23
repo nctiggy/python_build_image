@@ -24,7 +24,7 @@ pipeline {
         steps {
           container('kaniko') {
             sh('cp $DOCKER_CONFIG /kaniko/.docker/config.json')
-            sh('/kaniko/executor --destination=nctiggy/python-build-image:$GIT_BRANCH')
+            sh('/kaniko/executor --registry-mirror index.docker.io --destination=nctiggy/python-build-image:$GIT_BRANCH')
           }
         }
       }
