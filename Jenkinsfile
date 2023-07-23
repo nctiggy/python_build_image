@@ -26,23 +26,13 @@ pipeline {
     }
 
     stages {
-      stage('get latest tag') {
-        steps {
-          container('alpine') {
-            sh '''
-              apk update
-              apk add git
-              git config --global --add safe.directory /home/jenkins/agent/workspace/python_build_image
-            '''
-          }
-        }
-      }
       stage('build the image') {
         steps {
           container('kaniko') {
             sh('cp $DOCKER_CONFIG /kaniko/.docker/config.json')
-            sh "/kaniko/executor --destination=nctiggy/python-build-image"
+            sh "/kaniko/executor --destination=nctiggy/python-build-image:${GIT_BRANCH}"
           }
         }
       }
+    }
 }
