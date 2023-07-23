@@ -7,7 +7,7 @@ pipeline {
           spec:
             containers:
             - name: kaniko
-              image: gcr.io/kaniko-project/executor:debug
+              image: gcr.io/kaniko-project/executor:latest
               command:
               - sleep
               args:
@@ -25,7 +25,7 @@ pipeline {
           container('kaniko') {
             sh('cp $DOCKER_CONFIG /kaniko/.docker/config.json')
             sh("cat /kaniko/.docker/config.json")
-            sh("/kaniko/executor --destination=nctiggy/python-build-image")
+            sh('/kaniko/executor --destination=nctiggy/python-build-image:$GIT_BRANCH')
           }
         }
       }
