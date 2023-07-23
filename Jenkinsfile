@@ -23,9 +23,9 @@ pipeline {
       stage('build the image') {
         steps {
           container('kaniko') {
-            sh("cp $DOCKER_CONFIG /kaniko/.docker/config.json")
+            sh('cp $DOCKER_CONFIG /kaniko/.docker/config.json')
             sh("cat /kaniko/.docker/config.json")
-            sh("/kaniko/executor --destination=nctiggy/python-build-image:$GIT_BRANCH")
+            sh("/kaniko/executor --destination=nctiggy/python-build-image")
           }
         }
       }
