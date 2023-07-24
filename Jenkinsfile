@@ -26,10 +26,8 @@ pipeline {
             sh '''
                 pwd
                 PASSWD=`echo '$DOCKER_CREDS_USR:$DOCKER_CREDS_PSW' | tr -d '\n' | base64 -i -w 0`
-                cat << _EOF_ > /kaniko/.docker/config.json
-                {"auths": {"docker.io": {"auth": "${PASSWD}"}}}
-                _EOF_
-
+                echo '{"auths": {"docker.io": {"auth": "${PASSWD}"}}}'
+                echo '{"auths": {"docker.io": {"auth": "${PASSWD}"}}}' > /kaniko/.docker/config.json
                 cat /kaniko/.docker/config.json
                 /kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH
             '''
