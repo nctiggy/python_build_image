@@ -1,6 +1,7 @@
 pipeline {
     agent {
         kubernetes {
+        defaultContainer 'kaniko'
         yaml '''
           apiVersion: v1
           kind: Pod
@@ -8,10 +9,23 @@ pipeline {
             containers:
             - name: kaniko
               image: gcr.io/kaniko-project/executor:debug
+              imagePullPolicy: Always
               command:
               - sleep
               args:
               - 99d
+              volumeMounts:
+                - name: jenkins-docker-cfg
+                  mountPath: /kaniko/.docker
+            volumes:
+            - name: jenkins-docker-cfg
+              projected:
+                sources:
+                - secret:
+                    name: regcred
+                    items:
+                      - key: .dockerconfigjson
+                        path: config.json
         '''
       }
     }
@@ -22,17 +36,7 @@ pipeline {
     stages {
       stage('build the image') {
         steps {
-          container('kaniko') {
-            sh '''
-                pwd
-                PASSWD=`echo "$DOCKER_CREDS_USR:$DOCKER_CREDS_PSW" | base64`
-                JSON=`printf '{"auths": {"https://index.docker.io/v1/": {"auth": "%s"}}}' "$PASSWD"`
-                echo "$JSON" > /kaniko/.docker/config.json
-                mkdir /root/.docker
-                echo "$JSON" > ~/.docker/config.json
-                cat /kaniko/.docker/config.json
-                /kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH
-            '''
+            sh("/kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH")
           }
         }
       }
