@@ -7,7 +7,7 @@ pipeline {
           spec:
             containers:
             - name: kaniko
-              image: gcr.io/kaniko-project/executor:debug
+              image: gcr.io/kaniko-project/executor:v1.11.0-debug
               command:
               - sleep
               args:
