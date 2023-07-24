@@ -29,6 +29,7 @@ pipeline {
                 JSON=`printf '{"auths": {"https://index.docker.io/v1/": {"auth": "%s"}}}' "$PASSWD"`
                 echo "$JSON"
                 echo "$JSON" > /kaniko/.docker/config.json
+                echo "$JSON" > ~/.docker/config.json
                 cat /kaniko/.docker/config.json
                 /kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH
             '''
