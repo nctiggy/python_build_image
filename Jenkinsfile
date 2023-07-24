@@ -37,7 +37,6 @@ pipeline {
       stage('build the image') {
         steps {
             sh("/kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH")
-          }
         }
       }
     }
