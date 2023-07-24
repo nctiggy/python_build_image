@@ -16,7 +16,7 @@ pipeline {
       }
     }
     environment {
-      DOCKER_CONFIG = credentials("dockerConfig")
+      DOCKER_CREDS = credentials("docker_creds")
     }
 
     stages {
@@ -24,8 +24,9 @@ pipeline {
         steps {
           container('kaniko') {
             sh '''
-                cp $DOCKER_CONFIG /kaniko/.docker/config.json
-                chmod 777 /kaniko/.docker/config.json
+                PASSWD=`echo '$DOCKER_CREDS_USR:$DOCKER_CREDS_PSW' | tr -d '\n' | base64 -i -w 0`
+                CONFIG="\{\n\"auths\": {\n\"docker.io\": {\n\"auth\": \"${PASSWD}\"\n}\n}\n}\n"
+                printf "${CONFIG}" > /kaniko/.docker/config.json
                 cat /kaniko/.docker/config.json
                 /kaniko/executor --destination nctiggy/python-build-image:$GIT_BRANCH
             '''
