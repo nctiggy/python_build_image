@@ -6,7 +6,7 @@ RUN apt update && apt install -y --no-install-recommends \
             pip install pre-commit && \
             pip install pytest && \
             git config --global --add safe.directory '*' && \
-            curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --import && \\
+            curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --no-default-keyring --import && \
             curl -Os https://uploader.codecov.io/latest/linux/codecov && \
             curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM && \
             curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig && \
