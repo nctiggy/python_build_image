@@ -1,7 +1,7 @@
 FROM python:3.12
 
 RUN apt update && apt install -y --no-install-recommends \
-            git && \
+            git curl && \
             pip install tox && \
             pip install pre-commit && \
             pip install pytest && \
